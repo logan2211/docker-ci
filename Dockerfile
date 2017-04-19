@@ -13,6 +13,6 @@ RUN curl --silent --show-error --retry 5 \
 RUN pip install ansible ansible-lint tox
 
 
-RUN useradd -m -G users,sudo docker \
+RUN useradd -m -G users,sudo docker && \
     echo 'docker ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-docker
 USER docker
