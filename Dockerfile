@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 
 RUN apt-get update && \
     apt-get install -y \
-      sudo build-essential python2.7 python-dev git-core libffi-dev \
+      sudo curl build-essential python2.7 python-dev git-core libffi-dev \
       libssl-dev && rm -rf /var/lib/apt/lists/*
 
 # Install pip
