@@ -1,9 +1,13 @@
 FROM ubuntu:16.04
 
+# Use local apt mirrors
+RUN sed -ri 's%(archive|security).ubuntu.com%mirror.lstn.net%' \
+    /etc/apt/sources.list
+
 RUN apt-get update && \
     apt-get install -y \
       sudo curl build-essential python2.7 python-dev git-core libffi-dev \
-      libssl-dev && rm -rf /var/lib/apt/lists/*
+      libssl-dev nano && rm -rf /var/lib/apt/lists/*
 
 # Install pip
 RUN curl --silent --show-error --retry 5 \
