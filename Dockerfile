@@ -1,5 +1,7 @@
 FROM ubuntu:14.04
 
+RUN mv /sbin/initctl.distrib /sbin/initctl
+
 RUN apt-get update && \
     apt-get install -y \
       sudo curl build-essential python2.7 python-dev git-core libffi-dev \
