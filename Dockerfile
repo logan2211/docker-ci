@@ -53,4 +53,9 @@ RUN useradd -m -G users,sudo ubuntu && \
 RUN sed -ri 's%(archive|security).ubuntu.com%mirror.lstn.net%' \
     /etc/apt/sources.list
 
+# Add Limestone CA certificate
+RUN curl https://mirror.lstn.net/limestone-ca.crt > \
+      /usr/local/share/ca-certificates/limestone-ca.crt && \
+    update-ca-certificates
+
 USER ubuntu
