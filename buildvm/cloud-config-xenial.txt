@@ -1,0 +1,33 @@
+#cloud-config
+apt_update: true
+apt_upgrade: true
+packages:
+  - git
+  - ioping
+  - sysstat
+  - ifstat
+  # Ansible deps
+  - build-essential
+  - python-dev
+  - libssl-dev
+  - libffi-dev
+  # Docker deps
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+runcmd:
+ - 'wget -O /opt/get-pip.py https://bootstrap.pypa.io/get-pip.py'
+ - 'python /opt/get-pip.py'
+ # docker install
+ - 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -'
+ - 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
+ - 'apt-get update'
+ - 'apt-get install -y docker-ce'
+ - 'usermod -a -G docker ubuntu'
+ # Testing dependency
+ - 'pip install tox'
+power_state:
+ mode: reboot
+ timeout: 30
+ condition: True

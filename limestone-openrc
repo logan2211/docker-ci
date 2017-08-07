@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "Please enter your OpenStack Username: "
+read -r OS_USERNAME_INPUT
+export OS_USERNAME=$OS_USERNAME_INPUT
+
+echo "Please enter your OpenStack Password: "
+read -sr OS_PASSWORD_INPUT
+export OS_PASSWORD=$OS_PASSWORD_INPUT
+
+export OS_AUTH_URL=https://cloud.lstn.net:5000/v3
+export OS_NO_CACHE=1
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
+
+# For openstackclient
+export OS_IDENTITY_API_VERSION=3
+export OS_AUTH_VERSION=3
+
+export OS_REGION_NAME=us-dfw-1
+
+export OS_INTERFACE=public
+
+echo "Project not set, use 'setproject <project name>' to switch projects." \
+     "Your available projects are:"
+
+openstack project list --my-projects
