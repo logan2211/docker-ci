@@ -3,7 +3,7 @@ FROM opensuse:42.2
 RUN zypper -q --gpg-auto-import-keys -n ref -f && \
     zypper -q -n in -l \
       sudo gcc curl python python-xml python-devel git-core libffi-devel \
-      libopenssl-devel nano
+      libopenssl-devel nano iproute2
 
 # Install pip
 RUN curl --silent --show-error --retry 5 \
