@@ -43,7 +43,7 @@ RUN curl --silent --show-error --retry 5 \
     https://bootstrap.pypa.io/get-pip.py | sudo python2.7
 
 # Install python packages
-RUN pip install ansible ansible-lint tox
+RUN pip install ansible ansible-lint tox netaddr
 
 
 RUN useradd -m -G users,sudo ubuntu && \
