@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+. $(dirname $(readlink -f "$0"))/buildvm-base.sh
+
+export IMAGE=${IMAGE:-"CentOS 7 64 Bit"}
+export CLOUD_CONFIG=${CLOUD_CONFIG:-"cloud-config-cent7.txt"}
+
+buildvm

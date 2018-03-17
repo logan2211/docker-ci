@@ -1,39 +1,8 @@
 #!/usr/bin/env bash
-export VMNAME=${1:-"dev-${OS_USERNAME}"}
-export FLAVOR=${FLAVOR:-"l1.small"}
+
+. $(dirname $(readlink -f "$0"))/buildvm-base.sh
+
 export IMAGE=${IMAGE:-"Ubuntu 16.04 LTS (Xenial) 64 Bit"}
-export DISKSIZE=${DISKSIZE:-false}
-export SECGROUPS=${SECGROUPS:-"Management,Diagnostics"}
-export NETWORK=${NETWORK:-"Public Internet"}
-export KEYNAME=${KEYNAME:-$(openstack keypair list -f value | head -n1 | awk '{ print $1 }')}
 export CLOUD_CONFIG=${CLOUD_CONFIG:-"cloud-config-xenial.txt"}
 
-#why export these? inherit..
-#export OS_PROJECT_NAME=logan
-#export OS_TENANT_NAME="${OS_PROJECT_NAME}"
-
-export IMAGE_ID=$(openstack image list -f value | grep "${IMAGE}" | tail -n1 | awk '{ print $1 }')
-export NET_ID=$(openstack network list -f value | grep "${NETWORK}" | tail -n1 | awk '{ print $1 }')
-
-export CLOUD_CONFIG_DIR="$(dirname $(readlink -f "$0"))"
-#export CLOUD_CONFIG="cloud-config.txt"
-export CC="${CLOUD_CONFIG_DIR}/${CLOUD_CONFIG}"
-
-echo "Building $FLAVOR with ${DISKSIZE}GB root disk using ${IMAGE_ID} ${IMAGE}"
-echo "Network is set to ${NET_ID} ${NETWORK}"
-
-if [[ "${DISKSIZE}" = false ]]; then
-  BDM="--image ${IMAGE_ID}"
-else
-  BDM="--block-device source=image,id=${IMAGE_ID},dest=volume,size=${DISKSIZE},shutdown=remove,bootindex=0"
-fi
-
-nova boot \
-  --poll \
-  --flavor "${FLAVOR}" \
-  --key-name "${KEYNAME}" \
-  --user-data "${CC}" \
-  --security-groups "${SECGROUPS}" \
-  $BDM \
-  --nic "net-id=${NET_ID}" \
-  $VMNAME
+buildvm

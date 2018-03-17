@@ -1,0 +1,25 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - git
+  - wget
+  - nano
+  # Docker dependencies
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+runcmd:
+ - 'wget -O /opt/get-pip.py https://bootstrap.pypa.io/get-pip.py'
+ - 'python /opt/get-pip.py'
+ # Docker install
+ - 'yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo'
+ - 'yum -y install docker-ce'
+ - 'systemctl start docker'
+ - 'systemctl enable docker'
+ - 'usermod -a -G docker centos'
+ # Testing dependency
+ - 'pip install tox'
+power_state:
+ mode: reboot
+ timeout: 30
+ condition: True
