@@ -1,4 +1,4 @@
-FROM quay.io/loganv/docker-ci:ubuntu-xenial
+FROM quay.io/loganv/docker-ci:ubuntu-bionic
 
 USER root
 
