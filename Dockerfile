@@ -2,8 +2,8 @@ FROM ubuntu:18.04
 
 RUN apt-get update && \
     apt-get install -y \
-      sudo curl build-essential python2.7 python-dev git-core libffi-dev \
-      libssl-dev nano iputils-ping && rm -rf /var/lib/apt/lists/*
+      systemd sudo curl build-essential python2.7 python-dev git-core \ 
+      libffi-dev libssl-dev nano iputils-ping && rm -rf /var/lib/apt/lists/*
 
 # See tozd/ubuntu-systemd
 # tweaks for systemd
