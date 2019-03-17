@@ -50,7 +50,7 @@ RUN useradd -m -G users,sudo ubuntu && \
     echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu
 
 # Use local apt mirrors
-RUN sed -ri 's%(archive|security).ubuntu.com%mirror.lstn.net%' \
+RUN sed -ri 's%(archive|security).ubuntu.com%cache.mirror.lstn.net%' \
     /etc/apt/sources.list
 
 # Add Limestone CA certificate
