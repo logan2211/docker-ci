@@ -2,6 +2,7 @@ FROM quay.io/loganv/docker-ci:ubuntu-bionic
 
 USER root
 
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y s3cmd && rm -rf /var/lib/apt/lists/*
 
