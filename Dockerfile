@@ -20,9 +20,8 @@ RUN yum makecache fast; \
 RUN curl --show-error --retry 5 \
     https://bootstrap.pypa.io/get-pip.py | sudo python2.7
 
-RUN yum -y install python2-pyasn1 python2-pyOpenSSL python-ndg_httpsclient \
-      libselinux-python libsemanage-python gcc gcc-c++ libffi-devel \
-      openssl-devel
+RUN yum -y install libselinux-python libsemanage-python gcc gcc-c++ \
+      libffi-devel openssl-devel
 
 # Install python packages
 RUN pip install ansible ansible-lint tox
