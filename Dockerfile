@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update && \
     apt-get install -y \
-      systemd sudo curl iproute2 wget build-essential python2.7 python-dev \
+      systemd sudo curl iproute2 wget build-essential python3 python3-dev \
       git-core libffi-dev libssl-dev nano iputils-ping && rm -rf /var/lib/apt/lists/*
 
 # See tozd/ubuntu-systemd
@@ -40,11 +40,10 @@ RUN systemctl mask -- \
 
 # Install pip
 RUN curl --silent --show-error --retry 5 \
-    https://bootstrap.pypa.io/get-pip.py | sudo python2.7
+    https://bootstrap.pypa.io/get-pip.py | sudo python3
 
 # Install python packages
 RUN pip install ansible ansible-lint tox netaddr
-
 
 RUN useradd -m -G users,sudo ubuntu && \
     echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu
