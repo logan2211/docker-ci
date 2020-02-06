@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: iptables-rules
+  namespace: kube-system
+data:
+  # ***NOTE***
+  # This example does NOT permit SSH access to the nodes. You should add a line ie.
+  # -A INPUT -p tcp --dport 22 -j ACCEPT -m comment --comment "Wide-open SSH access"
+  # if you would like to have SSH open.
+  rules.v4: |
+    *filter
+    :INPUT DROP [0:0]
+    :FORWARD DROP [0:0]
+    :OUTPUT ACCEPT [0:0]
+    :DEFAULT_RULES - [0:0]
+    :KUBERNETES - [0:0]
+
+    -A INPUT -j KUBERNETES
+    -A KUBERNETES -p tcp --dport 6443 -m set --match-set cali40all-hosts-net src -j ACCEPT -m comment --comment "Kubernetes API node access"
+    -A KUBERNETES -p tcp --dport 6443 -m set --match-set cali40all-ipam-pools src -j ACCEPT -m comment --comment "Kubernetes API pod access"
+    -A KUBERNETES -p tcp --dport 2379:2380 -m set --match-set cali40all-hosts-net src -j ACCEPT -m comment --comment "etcd cluster access"
+    -A KUBERNETES -p tcp --dport 10250 -m set --match-set cali40all-hosts-net src -j ACCEPT -m comment --comment "Kubelet API"
+    -A KUBERNETES -p tcp --dport 179 -m set --match-set cali40all-hosts-net src -j ACCEPT -m comment --comment "Calico BGP"
+    -A KUBERNETES -p tcp --dport 30000:32767 -j ACCEPT -m comment --comment "Nodeports"
+
+    -A INPUT -j DEFAULT_RULES
+    -A DEFAULT_RULES -i lo -j ACCEPT
+    -A DEFAULT_RULES -p udp -m udp --dport 33434:33534 -m limit --limit 3/sec --limit-burst 10 -j ACCEPT
+    -A DEFAULT_RULES -p icmp -m limit --limit 3/sec --limit-burst 25 -j ACCEPT
+    -A DEFAULT_RULES -m state --state RELATED,ESTABLISHED -j ACCEPT
+    COMMIT
+
+  rules.v6: |
+    *filter
+    :INPUT DROP [0:0]
+    :FORWARD ACCEPT [0:0]
+    :OUTPUT ACCEPT [0:0]
+    :DEFAULT_RULES - [0:0]
+
+    -A INPUT -j DEFAULT_RULES
+    -A DEFAULT_RULES -s ff00::/8 -j ACCEPT
+    -A DEFAULT_RULES -s fe80::/10 -j ACCEPT
+    -A DEFAULT_RULES -i lo -j ACCEPT
+    -A DEFAULT_RULES -p udp -m udp --dport 33434:33534 -m limit --limit 3/sec --limit-burst 10 -j ACCEPT
+    -A DEFAULT_RULES -p ipv6-icmp -m limit --limit 3/sec --limit-burst 25 -j ACCEPT
+    -A DEFAULT_RULES -m state --state RELATED,ESTABLISHED -j ACCEPT
+    COMMIT

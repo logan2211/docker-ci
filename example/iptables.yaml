@@ -1,0 +1,65 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: iptables
+  namespace: kube-system
+rules:
+- apiGroups:
+  - ""
+  resourceNames:
+  - iptables-rules
+  resources:
+  - configmaps
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: iptables
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: iptables
+subjects:
+- kind: User
+  name: "system:serviceaccount:kube-system:iptables"
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: iptables
+  namespace: kube-system
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: iptables
+  namespace: kube-system
+  labels:
+    k8s-app: iptables
+spec:
+  selector:
+    matchLabels:
+      name: iptables
+  template:
+    metadata:
+      labels:
+        name: iptables
+    spec:
+      serviceAccountName: iptables
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+        - name: iptables
+          image: quay.io/loganv/docker-ci:iptables
+          imagePullPolicy: Always
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+      hostNetwork: true
