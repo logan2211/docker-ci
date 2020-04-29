@@ -48,7 +48,8 @@ RUN curl --silent --show-error --retry 5 \
 RUN pip install ansible ansible-lint tox netaddr
 
 RUN useradd -m -G users,sudo ubuntu && \
-    echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu
+    echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu && \
+    echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # Use local apt mirrors
 RUN sed -ri 's%(archive|security).ubuntu.com%cache.mirror.lstn.net%' \
