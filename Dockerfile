@@ -11,6 +11,8 @@ USER ubuntu
 RUN virtualenv ~/.openstack && \
     echo 'source ~/.local_profile' >> ~/.profile && \
     ~/.openstack/bin/pip install python-openstackclient
+ENV PATH="/home/ubuntu/.openstack/bin:${PATH}"
+
 
 COPY limestone-openrc /home/ubuntu
 COPY buildvm /home/ubuntu/.buildvm
