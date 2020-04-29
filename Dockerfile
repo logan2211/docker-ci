@@ -1,4 +1,4 @@
-FROM quay.io/loganv/docker-ci:ubuntu-bionic
+FROM quay.io/loganv/docker-ci:ubuntu-focal
 
 USER root
 
