@@ -4,8 +4,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y \
-      systemd sudo curl iproute2 wget build-essential python3 python3-dev \
-      git-core libffi-dev libssl-dev nano iputils-ping && rm -rf /var/lib/apt/lists/*
+      systemd sudo curl iproute2 wget python3 python3-distutils \
+      git-core nano iputils-ping && rm -rf /var/lib/apt/lists/*
 
 # See tozd/ubuntu-systemd
 # tweaks for systemd
