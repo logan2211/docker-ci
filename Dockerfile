@@ -11,6 +11,7 @@ RUN apt-get update && \
 # tweaks for systemd
 RUN systemctl mask -- \
     -.mount \
+    dev-vda1.device \
     dev-mqueue.mount \
     dev-hugepages.mount \
     etc-hosts.mount \
