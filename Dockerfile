@@ -38,6 +38,9 @@ RUN systemctl mask -- \
  \
  && ln -sf /lib/systemd/system/halt.target /etc/systemd/system/sigpwr.target
 
+# Set stop signal for systemd containers
+STOPSIGNAL SIGRTMIN+3
+
 # Install pip
 RUN curl --silent --show-error --retry 5 \
     https://bootstrap.pypa.io/get-pip.py | sudo python3
