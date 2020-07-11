@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:8
 
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
 systemd-tmpfiles-setup.service ] || rm -f $i; done); \
@@ -14,13 +14,13 @@ RUN yum makecache fast; \
     yum -y install deltarpm epel-release initscripts; \
     yum -y update; \
     yum -y install sudo which nano git curl \
-      python-devel redhat-lsb-core
+      python3-devel redhat-lsb-core
 
 # Install pip
 RUN curl --show-error --retry 5 \
-    https://bootstrap.pypa.io/get-pip.py | sudo python2.7
+    https://bootstrap.pypa.io/get-pip.py | sudo python3
 
-RUN yum -y install libselinux-python libsemanage-python gcc gcc-c++ \
+RUN yum -y install libselinux-python3 libsemanage-python3 gcc gcc-c++ \
       libffi-devel openssl-devel
 
 # Install python packages
