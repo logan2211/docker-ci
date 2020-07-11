@@ -2,6 +2,8 @@ FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+COPY etc /etc
+
 RUN apt-get update && \
     apt-get install -y \
       systemd sudo curl iproute2 wget python3 python3-distutils \
@@ -11,12 +13,8 @@ RUN apt-get update && \
 # tweaks for systemd
 RUN systemctl mask -- \
     -.mount \
-    dev-vda1.device \
     dev-mqueue.mount \
     dev-hugepages.mount \
-    etc-hosts.mount \
-    etc-hostname.mount \
-    etc-resolv.conf.mount \
     proc-bus.mount \
     proc-irq.mount \
     proc-kcore.mount \

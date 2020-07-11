@@ -1,0 +1,5 @@
+[Mount]
+Where=/etc/resolv.conf
+What=*
+Type=noauto
+Options=0

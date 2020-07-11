@@ -1,0 +1,5 @@
+[Mount]
+Where=/etc/hosts
+What=*
+Type=noauto
+Options=0
