@@ -13,6 +13,7 @@ RUN apt-get update && \
 # tweaks for systemd
 RUN systemctl mask -- \
     -.mount \
+    dev-ttyS0.device \
     dev-mqueue.mount \
     dev-hugepages.mount \
     proc-bus.mount \
