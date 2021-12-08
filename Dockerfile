@@ -4,7 +4,7 @@ FROM phpdockerio/php74-fpm:latest
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     php7.4-mysql php7.4-bcmath php7.4-gd php7.4-gmp php7.4-intl php7.4-redis php7.4-ssh2 \
-    php7.4-zip ipmitool git-core curl \
+    php7.4-zip php7.4-pcov ipmitool git-core curl \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Install mcrypt extensions
