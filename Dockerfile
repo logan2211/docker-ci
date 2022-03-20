@@ -40,10 +40,10 @@ RUN systemctl mask -- \
 
 # Install pip
 RUN curl --silent --show-error --retry 5 \
-    https://bootstrap.pypa.io/get-pip.py | sudo python2.7
+    https://bootstrap.pypa.io/pip/2.7/get-pip.py | sudo python2.7
 
 # Install python packages
-RUN pip install ansible ansible-lint tox netaddr
+RUN pip install ansible ansible-lint tox netaddr 'cryptography<3.0'
 
 
 RUN useradd -m -G users,sudo ubuntu && \
