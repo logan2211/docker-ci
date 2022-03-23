@@ -46,7 +46,7 @@ STOPSIGNAL SIGRTMIN+3
 
 # Install pip
 RUN curl --silent --show-error --retry 5 \
-    https://bootstrap.pypa.io/get-pip.py | sudo python3
+    https://bootstrap.pypa.io/pip/3.6/get-pip.py | sudo python3
 
 # Install python packages
 RUN pip install ansible ansible-lint tox netaddr
