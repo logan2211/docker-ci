@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -55,7 +55,7 @@ RUN useradd -m -G users,sudo ubuntu && \
     echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # Use local apt mirrors
-RUN sed -ri 's%(archive|security).ubuntu.com%cache.mirror.lstn.net%' \
+RUN sed -ri 's%(archive|ports|security).ubuntu.com%cache.mirror.lstn.net%' \
     /etc/apt/sources.list
 
 # Add Limestone CA certificate
