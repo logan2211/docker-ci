@@ -45,17 +45,17 @@ STOPSIGNAL SIGRTMIN+3
 
 # Install pip
 RUN curl --silent --show-error --retry 5 \
-    https://bootstrap.pypa.io/get-pip.py | sudo python3
+    https://bootstrap.pypa.io/get-pip.py | sudo python3 - --no-cache-dir
 
 # Install python packages
-RUN pip install ansible ansible-lint tox netaddr
+RUN pip install --no-cache-dir ansible ansible-lint tox netaddr
 
 RUN useradd -m -G users,sudo ubuntu && \
     echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu && \
     echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # Use local apt mirrors
-RUN sed -ri 's%(archive|security).ubuntu.com%cache.mirror.lstn.net%' \
+RUN sed -ri 's%(archive|ports|security).ubuntu.com%cache.mirror.lstn.net%' \
     /etc/apt/sources.list
 
 # Add Limestone CA certificate
