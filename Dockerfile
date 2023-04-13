@@ -40,17 +40,17 @@ RUN systemctl mask -- \
 
 # Install pip
 RUN curl --silent --show-error --retry 5 \
-    https://bootstrap.pypa.io/pip/2.7/get-pip.py | sudo python2.7
+    https://bootstrap.pypa.io/pip/2.7/get-pip.py | sudo python2.7 - --no-cache-dir
 
 # Install python packages
-RUN pip install ansible ansible-lint tox netaddr 'cryptography<3.0'
+RUN pip install --no-cache-dir ansible ansible-lint tox netaddr 'cryptography<3.0'
 
 
 RUN useradd -m -G users,sudo ubuntu && \
     echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu
 
 # Use local apt mirrors
-RUN sed -ri 's%(archive|security).ubuntu.com%cache.mirror.lstn.net%' \
+RUN sed -ri 's%(archive|ports|security).ubuntu.com%cache.mirror.lstn.net%' \
     /etc/apt/sources.list
 
 # Add Limestone CA certificate
