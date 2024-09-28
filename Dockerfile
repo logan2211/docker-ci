@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -6,8 +6,8 @@ COPY etc /etc
 
 RUN apt-get update && \
     apt-get install -y \
-      systemd sudo curl iproute2 wget python3 python3-distutils \
-      git-core nano iputils-ping && rm -rf /var/lib/apt/lists/*
+      systemd sudo curl iproute2 wget python3 python3-setuptools \
+      git-core nano iputils-ping pipx && rm -rf /var/lib/apt/lists/*
 
 # See tozd/ubuntu-systemd
 # tweaks for systemd
@@ -43,20 +43,16 @@ RUN systemctl mask -- \
 # Set stop signal for systemd containers
 STOPSIGNAL SIGRTMIN+3
 
-# Install pip
-RUN curl --silent --show-error --retry 5 \
-    https://bootstrap.pypa.io/get-pip.py | sudo python3 - --no-cache-dir
-
 # Install python packages
-RUN pip install --no-cache-dir ansible ansible-lint tox netaddr
+RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin \
+    pipx install --include-deps ansible ansible-lint tox netaddr
 
-RUN useradd -m -G users,sudo ubuntu && \
-    echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu && \
+RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu && \
     echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # Use local apt mirrors
 RUN sed -ri 's%(archive|ports|security).ubuntu.com%cache.mirror.lstn.net%' \
-    /etc/apt/sources.list
+    /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources
 
 # Add Limestone CA certificate
 RUN curl https://mirror.lstn.net/limestone-ca.crt > \
@@ -64,3 +60,4 @@ RUN curl https://mirror.lstn.net/limestone-ca.crt > \
     update-ca-certificates
 
 USER ubuntu
+WORKDIR /home/ubuntu
