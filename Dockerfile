@@ -52,7 +52,8 @@ RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/90-ubuntu && \
 
 # Use local apt mirrors
 RUN sed -ri 's%(archive|ports|security).ubuntu.com%cache.mirror.lstn.net%' \
-    /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources
+    /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources; \
+    echo 'Acquire::AllowInsecureRepositories "true";' > /etc/apt/apt.conf.d/insecure-repos;
 
 # Add Limestone CA certificate
 RUN curl https://mirror.lstn.net/limestone-ca.crt > \
